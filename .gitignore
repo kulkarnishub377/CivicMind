@@ -1,0 +1,12 @@
+node_modules/
+.next/
+__pycache__/
+*.pyc
+.env
+*.json
+!package.json
+!package-lock.json
+.venv/
+dist/
+build/
+.DS_Store

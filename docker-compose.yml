@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    # Uncomment for Google Cloud:
+    # - GOOGLE_CLOUD_PROJECT=your-project-id
+    # - VERTEX_AI_LOCATION=us-central1
+    # - GEMINI_MODEL=gemini-2.5-pro
+    # volumes:
+    #   - ./backend/data:/app/data
