@@ -251,9 +251,14 @@ async def get_community_pulse():
     }
 
 
+from fastapi import Security
+from core_governance import get_current_user, User
+
 @router.get("/ai-summary")
-async def get_ai_summary():
-    """Get AI-generated executive summary."""
+async def get_ai_summary(
+    current_user: User = Security(get_current_user, scopes=["official"])
+):
+    """Get AI-generated executive summary (Protected with official scope)."""
     return {
         "summary": (
             "Ward D is at highest risk due to critically elevated AQI (168), "
