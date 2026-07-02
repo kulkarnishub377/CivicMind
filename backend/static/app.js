@@ -1167,8 +1167,17 @@ function renderCitizenPortal() {
     const statusBadgeClass = c.status === 'Resolved' ? 'green' : c.status === 'In Progress' ? 'orange' : 'red';
     const severityBadgeClass = c.severity === 'Critical' ? 'red' : c.severity === 'High' ? 'orange' : 'purple';
     
+    const severityColors = {
+      'Low': '#10b981',      // Green
+      'Medium': '#8b5cf6',   // Purple
+      'High': '#f59e0b',     // Amber
+      'Critical': '#ef4444'  // Red
+    };
+    const accentColor = severityColors[c.severity] || '#3b82f6';
+    
     const card = document.createElement('div');
     card.className = 'complaint-log-item';
+    card.style.setProperty('--accent-color', accentColor);
     card.innerHTML = `
       <div class="comp-log-header">
         <span class="badge ${severityBadgeClass}">${c.severity} Urgency</span>

@@ -388,11 +388,18 @@ body {
 .grid-layout.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 .col-span-12 { grid-column: span 12 / span 12; }
+.col-span-11 { grid-column: span 11 / span 11; }
+.col-span-10 { grid-column: span 10 / span 10; }
 .col-span-9 { grid-column: span 9 / span 9; }
 .col-span-8 { grid-column: span 8 / span 8; }
+.col-span-7 { grid-column: span 7 / span 7; }
+.col-span-6 { grid-column: span 6 / span 6; }
 .col-span-5 { grid-column: span 5 / span 5; }
 .col-span-4 { grid-column: span 4 / span 4; }
 .col-span-3 { grid-column: span 3 / span 3; }
+.col-span-2 { grid-column: span 2 / span 2; }
+.col-span-1 { grid-column: span 1 / span 1; }
+
 
 .mb-6 { margin-bottom: 24px; }
 .my-4 { margin-top: 16px; margin-bottom: 16px; }
@@ -1438,8 +1445,8 @@ body {
 }
 
 .glass-input {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-glass);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-main);
   font-family: var(--font-body);
   font-size: 13px;
@@ -1447,17 +1454,18 @@ body {
   border-radius: 10px;
   outline: none;
   transition: var(--transition);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .glass-input:focus {
-  border-color: var(--color-primary);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: 0 0 10px var(--glow-primary);
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(15, 23, 42, 0.7);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .glass-textarea {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-glass);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-main);
   font-family: var(--font-body);
   font-size: 13px;
@@ -1466,12 +1474,13 @@ body {
   outline: none;
   resize: none;
   transition: var(--transition);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .glass-textarea:focus {
-  border-color: var(--color-primary);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: 0 0 10px var(--glow-primary);
+  border-color: rgba(59, 130, 246, 0.4);
+  background: rgba(15, 23, 42, 0.7);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .radio-label {
@@ -1536,21 +1545,54 @@ body {
   padding-right: 6px;
 }
 
+.complaints-scroll-box::-webkit-scrollbar {
+  width: 4px;
+}
+
+.complaints-scroll-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.complaints-scroll-box::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+.complaints-scroll-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .complaint-log-item {
   background: rgba(255, 255, 255, 0.01);
   border: 1px solid var(--border-glass);
   border-radius: 12px;
-  padding: 16px;
+  padding: 16px 16px 16px 20px;
   transition: var(--transition);
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.complaint-log-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--accent-color, var(--color-primary));
+  box-shadow: 0 0 8px var(--accent-color, var(--color-primary));
+  opacity: 0.8;
 }
 
 .complaint-log-item:hover {
   border-color: var(--border-glass-hover);
   background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
+
 
 .comp-log-header {
   display: flex;
