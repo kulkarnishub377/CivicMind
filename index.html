@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicMind - Community Decision Intelligence Platform</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="glassmorphic-theme">
+  
+  <!-- Application Container -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar-aside">
+      <div class="brand-header">
+        <div class="brand-logo">
+          <i class="fa-solid fa-brain brand-icon animate-pulse-glow"></i>
+        </div>
+        <div class="brand-info">
+          <h2>CivicMind</h2>
+          <p>Decision Intelligence</p>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <button class="nav-btn active" data-panel="dashboard">
+              <i class="fa-solid fa-chart-line"></i>
+              <span>Dashboard</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-panel="decision-center">
+              <i class="fa-solid fa-gavel"></i>
+              <span>Decision Center</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-panel="ai-chat">
+              <i class="fa-solid fa-comments"></i>
+              <span>AI Chat Assistant</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-panel="citizen-portal">
+              <i class="fa-solid fa-user-shield"></i>
+              <span>Citizen Portal</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-panel="simulator">
+              <i class="fa-solid fa-sliders"></i>
+              <span>What-If Simulator</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-panel="analytics">
+              <i class="fa-solid fa-magnifying-glass-chart"></i>
+              <span>Predictive Analytics</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+      
+      <!-- Developer Credit Card -->
+      <div class="sidebar-credit">
+        <div class="credit-card">
+          <div class="avatar-ring">
+            <img src="https://kulkarnishub377.github.io/photo_sk.jpg" alt="Shubham Kulkarni" onerror="this.src='https://via.placeholder.com/150'">
+          </div>
+          <div class="credit-details">
+            <span class="developer-label">Developer</span>
+            <a href="https://kulkarnishub377.github.io/" target="_blank" class="developer-name">Shubham Kulkarni</a>
+            <span class="developer-title">AI/ML Engineer</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <h1 id="panel-title">City Dashboard</h1>
+          <p id="panel-subtitle">SmartVille — Real-time community metrics & AI insights</p>
+        </div>
+        
+        <div class="header-right">
+          <!-- Ward Selector -->
+          <div class="select-wrapper">
+            <select id="global-ward-selector" class="glass-select">
+              <option value="All">All Wards (SmartVille)</option>
+              <option value="Ward A">Ward A</option>
+              <option value="Ward B">Ward B</option>
+              <option value="Ward C">Ward C</option>
+              <option value="Ward D">Ward D</option>
+              <option value="Ward E">Ward E</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+          </div>
+          
+          <!-- Alert Ribbon -->
+          <div class="status-indicator">
+            <span class="pulse-dot red"></span>
+            <span id="alerts-count">3 Active Alerts</span>
+          </div>
+          
+          <!-- Clock -->
+          <div class="header-clock" id="header-clock">
+            Loading...
+          </div>
+        </div>
+      </header>
+      
+      <!-- PANELS SECTION -->
+      
+      <!-- 1. DASHBOARD PANEL -->
+      <section id="panel-dashboard" class="content-panel active">
+        <!-- Overview Row -->
+        <div class="grid-layout cols-12 mb-6">
+          
+          <!-- Composite score -->
+          <div class="col-span-3 glass-card flex-center flex-column text-center relative py-6">
+            <h3 class="card-label">City Health Index</h3>
+            
+            <div class="radial-progress-container my-4">
+              <svg viewBox="0 0 100 100" class="radial-svg">
+                <circle class="track" cx="50" cy="50" r="42" stroke="#1e293b" stroke-width="6" fill="none"/>
+                <circle id="city-score-ring" class="progress" cx="50" cy="50" r="42" stroke="url(#gradient-accent)" stroke-width="7" stroke-dasharray="264" stroke-dashoffset="50" stroke-linecap="round" fill="none"/>
+                
+                <defs>
+                  <linearGradient id="gradient-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#06b6d4" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="radial-value">
+                <span id="city-score-value">81</span>
+                <span class="pct-sign">/100</span>
+              </div>
+            </div>
+            
+            <span class="score-trend-indicator green" id="score-trend">
+              <i class="fa-solid fa-arrow-trend-up"></i> +2.4% vs last week
+            </span>
+          </div>
+          
+          <!-- Ward Comparison -->
+          <div class="col-span-5 glass-card">
+            <div class="card-header justify-between">
+              <h3 class="card-label">Ward Score Comparison</h3>
+              <span class="card-hint">Click a bar to focus</span>
+            </div>
+            <div class="chart-wrapper h-200 mt-4">
+              <canvas id="wardComparisonChart"></canvas>
+            </div>
+          </div>
+          
+          <!-- Community Pulse Sentiment -->
+          <div class="col-span-4 glass-card flex-column">
+            <h3 class="card-label mb-4">❤️ Public Sentiment & Feedback</h3>
+            
+            <div class="flex-row items-center justify-between mb-4">
+              <div class="sentiment-meter-container">
+                <div class="sentiment-emoji-display" id="sentiment-emoji">😊</div>
+                <div class="sentiment-percentage" id="sentiment-pct">72%</div>
+                <div class="sentiment-tag">Positive</div>
+              </div>
+              
+              <div class="flex-1 ml-6 space-y-3">
+                <div class="sentiment-bar-row">
+                  <span class="bar-lbl">Positive</span>
+                  <div class="bar-bg"><div class="bar-fill green" style="width: 55%"></div></div>
+                  <span class="bar-val">55%</span>
+                </div>
+                <div class="sentiment-bar-row">
+                  <span class="bar-lbl">Neutral</span>
+                  <div class="bar-bg"><div class="bar-fill yellow" style="width: 25%"></div></div>
+                  <span class="bar-val">25%</span>
+                </div>
+                <div class="sentiment-bar-row">
+                  <span class="bar-lbl">Negative</span>
+                  <div class="bar-bg"><div class="bar-fill red" style="width: 20%"></div></div>
+                  <span class="bar-val">20%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="alert-box purple mt-auto">
+              <i class="fa-solid fa-lightbulb flex-shrink-0 mr-3"></i>
+              <p id="sentiment-alert-text">Public satisfaction dropped in Ward D due to municipal waste backlog.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Metric Cards Row -->
+        <div class="grid-layout cols-5 mb-6" id="metric-cards-container">
+          
+          <!-- Air Quality -->
+          <div class="glass-card metric-card" data-metric="aqi">
+            <div class="metric-header">
+              <span class="metric-icon"><i class="fa-solid fa-wind"></i></span>
+              <span class="metric-trend up text-orange"><i class="fa-solid fa-arrow-trend-up"></i> +12%</span>
+            </div>
+            <div class="metric-body">
+              <h4 class="metric-value" id="card-aqi">112</h4>
+              <span class="metric-unit">AQI (Unhealthy)</span>
+            </div>
+            <div class="metric-footer">
+              <span>Air Quality Index</span>
+            </div>
+          </div>
+          
+          <!-- Traffic -->
+          <div class="glass-card metric-card" data-metric="traffic">
+            <div class="metric-header">
+              <span class="metric-icon"><i class="fa-solid fa-car-side"></i></span>
+              <span class="metric-trend down text-green"><i class="fa-solid fa-arrow-trend-down"></i> -4%</span>
+            </div>
+            <div class="metric-body">
+              <h4 class="metric-value" id="card-traffic">58%</h4>
+              <span class="metric-unit">Congestion Index</span>
+            </div>
+            <div class="metric-footer">
+              <span>Traffic Delays</span>
+            </div>
+          </div>
+          
+          <!-- Water usage -->
+          <div class="glass-card metric-card" data-metric="water">
+            <div class="metric-header">
+              <span class="metric-icon"><i class="fa-solid fa-droplet"></i></span>
+              <span class="metric-trend stable"><i class="fa-solid fa-minus"></i> Stable</span>
+            </div>
+            <div class="metric-body">
+              <h4 class="metric-value" id="card-water">74%</h4>
+              <span class="metric-unit">Usage Level</span>
+            </div>
+            <div class="metric-footer">
+              <span>Water Utility Load</span>
+            </div>
+          </div>
+          
+          <!-- Citizen complaints -->
+          <div class="glass-card metric-card" data-metric="complaints">
+            <div class="metric-header">
+              <span class="metric-icon"><i class="fa-solid fa-bullhorn"></i></span>
+              <span class="metric-trend up text-red"><i class="fa-solid fa-arrow-trend-up"></i> +28%</span>
+            </div>
+            <div class="metric-body">
+              <h4 class="metric-value" id="card-complaints">234</h4>
+              <span class="metric-unit">Active Tickets</span>
+            </div>
+            <div class="metric-footer">
+              <span>Citizen Reports</span>
+            </div>
+          </div>
+          
+          <!-- Safety index -->
+          <div class="glass-card metric-card" data-metric="safety">
+            <div class="metric-header">
+              <span class="metric-icon"><i class="fa-solid fa-shield-halved"></i></span>
+              <span class="metric-trend up text-green"><i class="fa-solid fa-arrow-trend-up"></i> +1.5%</span>
+            </div>
+            <div class="metric-body">
+              <h4 class="metric-value" id="card-safety">89</h4>
+              <span class="metric-unit">Safety Score</span>
+            </div>
+            <div class="metric-footer">
+              <span>Public Safety</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Detailed Analytics Charts -->
+        <div class="grid-layout cols-3 mb-6">
+          <div class="glass-card">
+            <h3 class="card-label">AQI Trends (30 Days)</h3>
+            <div class="chart-wrapper h-200 mt-4">
+              <canvas id="aqiTrendChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <h3 class="card-label">Complaints Volume (30 Days)</h3>
+            <div class="chart-wrapper h-200 mt-4">
+              <canvas id="complaintsTrendChart"></canvas>
+            </div>
+          </div>
+          <div class="glass-card">
+            <h3 class="card-label">Complaint Categories</h3>
+            <div class="chart-wrapper h-200 mt-4">
+              <canvas id="complaintCategoriesChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 2. DECISION CENTER PANEL -->
+      <section id="panel-decision-center" class="content-panel">
+        
+        <!-- Collaborating Agents Grid -->
+        <div class="grid-layout cols-4 mb-6" id="agent-grid">
+          
+          <!-- Environment Agent -->
+          <div class="glass-card agent-card">
+            <div class="agent-avatar env">
+              <i class="fa-solid fa-seedling"></i>
+            </div>
+            <div class="agent-info">
+              <h4>EcoWatch Agent</h4>
+              <p class="role">Environment & AQI</p>
+              <div class="badge green">Active</div>
+            </div>
+            <div class="agent-brief">
+              Monitoring air quality indexes and water reservoir volume forecasts.
+            </div>
+            <div class="agent-metric">
+              <span>Avg AQI:</span>
+              <strong id="agent-env-aqi">112</strong>
+            </div>
+          </div>
+          
+          <!-- Mobility Agent -->
+          <div class="glass-card agent-card">
+            <div class="agent-avatar mob">
+              <i class="fa-solid fa-route"></i>
+            </div>
+            <div class="agent-info">
+              <h4>TransitFlow Agent</h4>
+              <p class="role">Mobility & Traffic</p>
+              <div class="badge green">Active</div>
+            </div>
+            <div class="agent-brief">
+              Predicting congestion bottlenecks and public transport dispatch delays.
+            </div>
+            <div class="agent-metric">
+              <span>Avg Delay:</span>
+              <strong id="agent-mob-delay">13m</strong>
+            </div>
+          </div>
+          
+          <!-- Citizen Agent -->
+          <div class="glass-card agent-card">
+            <div class="agent-avatar cit">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="agent-info">
+              <h4>CivicVoice Agent</h4>
+              <p class="role">Citizen Sentiment</p>
+              <div class="badge green">Active</div>
+            </div>
+            <div class="agent-brief">
+              Analyzing citizen forums, complaints, and ticket resolution speed.
+            </div>
+            <div class="agent-metric">
+              <span>Pulse Index:</span>
+              <strong id="agent-cit-pulse">72/100</strong>
+            </div>
+          </div>
+          
+          <!-- Recommendation Agent -->
+          <div class="glass-card agent-card">
+            <div class="agent-avatar rec">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div class="agent-info">
+              <h4>Strategy Engine</h4>
+              <p class="role">Decision Intelligence</p>
+              <div class="badge purple animate-pulse-glow">Thinking</div>
+            </div>
+            <div class="agent-brief">
+              Synthesizing outcomes and generating high-impact strategic options.
+            </div>
+            <div class="agent-metric">
+              <span>Action Plans:</span>
+              <strong id="agent-rec-plans">4 Active</strong>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Decision Matrix & Action Items -->
+        <div class="grid-layout cols-12">
+          
+          <!-- Collaborative Actions List -->
+          <div class="col-span-8 glass-card">
+            <div class="card-header justify-between">
+              <h3 class="card-label">💡 Strategic AI Recommendations</h3>
+              <div class="flex-row gap-2">
+                <button class="small-btn outline filter-btn active" data-filter="All">All</button>
+                <button class="small-btn outline filter-btn" data-filter="Critical">Critical</button>
+                <button class="small-btn outline filter-btn" data-filter="High">High</button>
+              </div>
+            </div>
+            
+            <div class="action-items-list" id="recommendations-container">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+          
+          <!-- Priority Queue & Active Alerts -->
+          <div class="col-span-4 glass-card flex-column">
+            <h3 class="card-label mb-4">🚨 Active City Risk Queue</h3>
+            <div class="risk-queue-container" id="risk-alerts-container">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 3. AI CHAT ASSISTANT PANEL -->
+      <section id="panel-ai-chat" class="content-panel">
+        <div class="grid-layout cols-12 h-calc-header">
+          
+          <!-- Chat Window -->
+          <div class="col-span-9 glass-card flex-column p-0 overflow-hidden relative">
+            
+            <!-- Chat Header -->
+            <div class="chat-pane-header">
+              <div class="avatar-ring small flex-shrink-0">
+                <i class="fa-solid fa-brain font-14"></i>
+              </div>
+              <div class="chat-header-details">
+                <h4>CivicMind Intelligent Agent</h4>
+                <p>Equipped with Real-time Ward Data & Decision Scenarios</p>
+              </div>
+              <div class="chat-status text-green font-12 ml-auto">
+                <i class="fa-solid fa-circle-check"></i> System Online
+              </div>
+            </div>
+            
+            <!-- Chat Messages Box -->
+            <div class="chat-messages-box" id="chat-messages">
+              <div class="message incoming">
+                <div class="message-bubble">
+                  Hello! I am CivicMind, your community decision intelligence assistant. I can analyze ward conditions, run predictions, and outline recommendations for SmartVille.
+                  <br><br>
+                  Try selecting one of the suggested prompts on the right or ask me about:
+                  <strong>"Which ward needs urgent attention?"</strong> or <strong>"Show flood risk prediction for Ward C."</strong>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Typing Indicator -->
+            <div class="typing-indicator-wrapper hide" id="typing-indicator">
+              <span class="typing-text">CivicMind is thinking</span>
+              <div class="typing-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+            
+            <!-- Chat Input Form -->
+            <form class="chat-input-form" id="chat-form">
+              <input type="text" id="chat-input" placeholder="Ask CivicMind about urban metrics, risk forecasts, or policy recommendations..." autocomplete="off">
+              <button type="submit" class="chat-send-btn">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+          
+          <!-- Suggested Prompts Sidebar -->
+          <div class="col-span-3 glass-card flex-column">
+            <h3 class="card-label mb-3"><i class="fa-regular fa-lightbulb text-yellow mr-2"></i> Suggested Analytics</h3>
+            <div class="suggested-prompts-container" id="chat-suggestions">
+              <!-- Dynamically populated -->
+            </div>
+            
+            <div class="agent-context-box mt-auto p-4 border-t border-glass">
+              <h4 class="font-13 font-semibold mb-2">Sources Referenced:</h4>
+              <ul class="sources-list">
+                <li><i class="fa-solid fa-database"></i> BigQuery: Ward Sensors</li>
+                <li><i class="fa-solid fa-database"></i> BigQuery: Citizen Feedback</li>
+                <li><i class="fa-solid fa-microchip"></i> Vertex AI: Forecasting Engine</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 4. WHAT-IF SIMULATOR PANEL -->
+      <section id="panel-simulator" class="content-panel">
+        <div class="grid-layout cols-12">
+          
+          <!-- Simulator Controls -->
+          <div class="col-span-4 glass-card flex-column">
+            <div class="card-header justify-between mb-4">
+              <h3 class="card-label">🔬 Simulation Parameters</h3>
+              <button id="reset-sim-btn" class="small-btn text">Reset Controls</button>
+            </div>
+            
+            <div class="sim-sliders-group space-y-6">
+              
+              <!-- Slider 1 -->
+              <div class="slider-control">
+                <div class="slider-header justify-between">
+                  <span class="slider-lbl">Rainfall Delta (%)</span>
+                  <strong class="slider-val" id="val-rainfall">0%</strong>
+                </div>
+                <input type="range" id="sim-rainfall" min="-50" max="100" value="0" class="glass-slider">
+                <p class="slider-hint">Simulate storm intensities (+100%) or drought conditions (-50%).</p>
+              </div>
+              
+              <!-- Slider 2 -->
+              <div class="slider-control">
+                <div class="slider-header justify-between">
+                  <span class="slider-lbl">Waste Collection Rate</span>
+                  <strong class="slider-val" id="val-waste">Daily</strong>
+                </div>
+                <input type="range" id="sim-waste" min="1" max="4" value="2" class="glass-slider">
+                <p class="slider-hint">Simulate collection intervals: Daily, Alternate, Weekly, Semi-weekly.</p>
+              </div>
+              
+              <!-- Slider 3 -->
+              <div class="slider-control">
+                <div class="slider-header justify-between">
+                  <span class="slider-lbl">Transit Expansion Budget</span>
+                  <strong class="slider-val" id="val-transit">$0M</strong>
+                </div>
+                <input type="range" id="sim-transit" min="0" max="10" value="0" class="glass-slider">
+                <p class="slider-hint">Allocate capital budget to construct bus lanes and light rail lines.</p>
+              </div>
+              
+              <!-- Slider 4 -->
+              <div class="slider-control">
+                <div class="slider-header justify-between">
+                  <span class="slider-lbl">Water Restrictions State</span>
+                  <strong class="slider-val" id="val-water-res">None</strong>
+                </div>
+                <input type="range" id="sim-water" min="1" max="3" value="1" class="glass-slider">
+                <p class="slider-hint">Impose mandatory water consumption limits: Stage 1, Stage 2, or Stage 3.</p>
+              </div>
+            </div>
+            
+            <button id="run-simulation-btn" class="primary-btn mt-6 py-3 font-semibold">
+              <i class="fa-solid fa-bolt mr-2"></i> Forecast Simulated Outcomes
+            </button>
+          </div>
+          
+          <!-- Simulator Outputs -->
+          <div class="col-span-8 glass-card flex-column">
+            <h3 class="card-label mb-4">🔮 Forecasted Impact Overview</h3>
+            
+            <div class="grid-layout cols-12 mb-6">
+              <!-- Score Delta Card -->
+              <div class="col-span-4 bg-slate-800-glass p-5 rounded-lg flex-center flex-column text-center relative border-glass">
+                <span class="font-11 text-slate-500 uppercase tracking-wider mb-2">Simulated City Score</span>
+                <div class="sim-score-ring">
+                  <span id="sim-score-output-val">81</span>
+                  <span class="sub text-slate-500">/100</span>
+                </div>
+                <span id="sim-delta-badge" class="badge green mt-3 font-12">+0 Points Difference</span>
+              </div>
+              
+              <!-- Predictor explainability list -->
+              <div class="col-span-8 bg-slate-800-glass p-5 rounded-lg border-glass">
+                <span class="font-11 text-slate-500 uppercase tracking-wider mb-3 block">Predicted Risk Mitigation</span>
+                <div class="space-y-3" id="sim-risk-outputs">
+                  <!-- Generated dynamically -->
+                </div>
+              </div>
+            </div>
+            
+            <!-- Comparison Chart -->
+            <div class="col-span-12 flex-1">
+              <h4 class="font-13 font-semibold mb-3">Metric Impact Comparison (Current vs. Simulated)</h4>
+              <div class="chart-wrapper h-250">
+                <canvas id="simComparisonChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 5. PREDICTIVE ANALYTICS PANEL -->
+      <section id="panel-analytics" class="content-panel">
+        <div class="grid-layout cols-12 mb-6">
+          
+          <!-- Main Forecast Chart -->
+          <div class="col-span-9 glass-card">
+            <div class="card-header justify-between">
+              <h3 class="card-label">📅 Multi-Dimensional 30-Day Forecast</h3>
+              <div class="flex-row gap-2">
+                <select id="analytics-metric-select" class="glass-select py-1">
+                  <option value="aqi">Air Quality Index (AQI)</option>
+                  <option value="complaints">Complaints Volume</option>
+                  <option value="water">Water Consumption</option>
+                </select>
+              </div>
+            </div>
+            <div class="chart-wrapper h-300 mt-4">
+              <canvas id="analyticsForecastChart"></canvas>
+            </div>
+          </div>
+          
+          <!-- ML Model Info -->
+          <div class="col-span-3 glass-card flex-column">
+            <h3 class="card-label mb-4">🧠 Predictor Engine Details</h3>
+            
+            <div class="space-y-4">
+              <div class="info-block">
+                <label>Model Architecture</label>
+                <div class="font-14 text-white font-semibold">Random Forest + LSTM Time-Series</div>
+              </div>
+              
+              <div class="info-block">
+                <label>Prediction Confidence</label>
+                <div class="progress-bar-wrapper">
+                  <div class="progress-bar-fill font-12 bg-blue-500" style="width: 89%;">89%</div>
+                </div>
+              </div>
+              
+              <div class="info-block">
+                <label>Inputs Tracked</label>
+                <ul class="bullet-list">
+                  <li>Daily precipitation & humidity</li>
+                  <li>Industrial zones exhaust volumes</li>
+                  <li>Real-time municipal GPS locations</li>
+                  <li>Citizen helpline tickets counts</li>
+                </ul>
+              </div>
+              
+              <div class="info-block mt-auto pt-4 border-t border-glass">
+                <div class="text-[10px] text-slate-500">
+                  Last model training: <strong>2 hours ago</strong> (Vertex AI pipeline)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Risk Factors Matrix -->
+        <div class="glass-card">
+          <h3 class="card-label mb-4">📊 Risk Factor Analysis</h3>
+          <div class="grid-layout cols-4 text-center">
+            
+            <div class="factor-card p-4 bg-slate-800-glass rounded-lg border-glass">
+              <div class="factor-val text-red">36°C</div>
+              <div class="factor-lbl">Ozone Threshold Trigger</div>
+              <p class="factor-desc mt-2">Elevated ozone synthesis triggers alerts in industrial corridor.</p>
+            </div>
+            
+            <div class="factor-card p-4 bg-slate-800-glass rounded-lg border-glass">
+              <div class="factor-val text-yellow">15%</div>
+              <div class="factor-lbl">Pipeline Water Leakage</div>
+              <p class="factor-desc mt-2">Unresolved infrastructure leaks degrade water buffer score.</p>
+            </div>
+            
+            <div class="factor-card p-4 bg-slate-800-glass rounded-lg border-glass">
+              <div class="factor-val text-blue">40%</div>
+              <div class="factor-lbl">Rainfall Deviation</div>
+              <p class="factor-desc mt-2">Drainage throughput capacity reaches threshold limit.</p>
+            </div>
+            
+            <div class="factor-card p-4 bg-slate-800-glass rounded-lg border-glass">
+              <div class="factor-val text-purple">28%</div>
+              <div class="factor-lbl">Citizen Grievance Spike</div>
+              <p class="factor-desc mt-2">Public transit wait delay feedback correlates with complaints.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 6. CITIZEN PORTAL PANEL -->
+      <section id="panel-citizen-portal" class="content-panel">
+        <div class="grid-layout cols-12">
+          
+          <!-- Submit Complaint Form -->
+          <div class="col-span-5 glass-card flex-column">
+            <h3 class="card-label mb-4"><i class="fa-solid fa-file-signature text-blue mr-2"></i> Report a Community Issue</h3>
+            
+            <form id="complaint-form" class="space-y-3">
+              <div class="form-group">
+                <label class="form-label" for="comp-title">Issue Title</label>
+                <input type="text" id="comp-title" class="glass-input" placeholder="e.g. Streetlight out on Oak St" required>
+              </div>
+              
+              <div class="grid-layout cols-2 gap-2">
+                <div class="form-group">
+                  <label class="form-label" for="comp-ward">Select Ward</label>
+                  <select id="comp-ward" class="glass-select w-full" required>
+                    <option value="Ward A">Ward A</option>
+                    <option value="Ward B">Ward B</option>
+                    <option value="Ward C">Ward C</option>
+                    <option value="Ward D">Ward D</option>
+                    <option value="Ward E">Ward E</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label" for="comp-category">Category</label>
+                  <select id="comp-category" class="glass-select w-full" required>
+                    <option value="Water Scarcity">Water Scarcity</option>
+                    <option value="Waste Management">Waste Management</option>
+                    <option value="Air Quality">Air Quality</option>
+                    <option value="Traffic Congestion">Traffic Congestion</option>
+                    <option value="Public Safety">Public Safety</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Urgency Level</label>
+                <div class="flex-row gap-2 mt-2">
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="Low" checked>
+                    <span>Low</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="Medium">
+                    <span>Medium</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="High">
+                    <span>High</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="Critical">
+                    <span>Urgent</span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="comp-description">Detailed Description</label>
+                <textarea id="comp-description" class="glass-textarea" rows="4" placeholder="Provide description, landmark, or specific details to help resolving teams..." required></textarea>
+              </div>
+              
+              <button type="submit" class="primary-btn w-full py-3 font-semibold mt-4">
+                <i class="fa-solid fa-paper-plane mr-2"></i> File Complaint
+              </button>
+            </form>
+          </div>
+          
+          <!-- Reported Complaints List -->
+          <div class="col-span-7 glass-card flex-column">
+            <div class="card-header justify-between mb-4">
+              <h3 class="card-label">📋 Filed Complaints & Resolution Logs</h3>
+              <div class="flex-row gap-2">
+                <button class="small-btn outline comp-filter-btn active" data-filter="All">All</button>
+                <button class="small-btn outline comp-filter-btn" data-filter="Pending">Pending</button>
+                <button class="small-btn outline comp-filter-btn" data-filter="In Progress">In Progress</button>
+                <button class="small-btn outline comp-filter-btn" data-filter="Resolved">Resolved</button>
+              </div>
+            </div>
+            
+            <div class="complaints-scroll-box" id="my-complaints-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
