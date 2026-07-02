@@ -40,10 +40,8 @@ async def health():
 
 
 # Mount static files at root for serving frontend index.html, styles.css, etc.
-static_dir = os.path.join(os.path.dirname(__file__), "static")
-if not os.path.exists(static_dir):
-    os.makedirs(static_dir)
-
+# Pointing to the project root (parent directory of backend)
+static_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 
 
