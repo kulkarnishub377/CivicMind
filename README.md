@@ -16,6 +16,28 @@
 
 </div>
 
+
+---
+
+## 📸 Interface Preview
+
+Here is a visual overview of the **CivicMind** Glassmorphic platform:
+
+| 📊 City Dashboard | ⚡ Executive Decision Center |
+|:---:|:---:|
+| ![City Dashboard](frontend_demo/dashboard.png) | ![Decision Center](frontend_demo/desion.png) |
+| *Real-time metrics, comparison trends, and Community Pulse* | *Multi-agent insights, priority risk queue, and action recommendations* |
+
+| 🛡️ Citizen Operations Portal | 🧠 AI Forecasting & Analytics |
+|:---:|:---:|
+| ![Citizen Portal](frontend_demo/citizen.png) | ![Forecasting Analytics](frontend_demo/forcaste.png) |
+| *Citizen issue filing form and dynamic resolution logging* | *Predictive ML trends, confidence bounds, and impact analysis* |
+
+| 💬 AI Decision Assistant |
+|:---:|
+| ![AI Chat Assistant](frontend_demo/ai.png) |
+| *Natural language query agent with Vertex AI and RAG integration* |
+
 ---
 
 ## 🎯 Problem Statement
@@ -114,20 +136,47 @@ Data Sources (Mock/BigQuery)
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Architecture Deep-Dive
 
-| Component | Technology |
-|-----------|-----------|
-| Frontend | Next.js 14 + Tailwind CSS + Recharts |
-| Backend | Python FastAPI |
-| LLM | Google Gemini 2.5 (via Vertex AI) |
-| RAG | Vertex AI Search / Vector Search |
-| Database | Google BigQuery |
-| Analytics | Looker Studio |
-| Storage | Google Cloud Storage |
-| API Layer | Google Cloud Run |
-| Agents | Agent Development Kit (ADK) |
-| Automation | Cloud Functions |
+### 1. Unified Frontend Client Stack
+*   **Structure:** Semantic **HTML5** structure optimized for fast rendering and browser search engine indexation.
+*   **Styling (Modern Glassmorphic Slate Theme):** Pure **CSS3** design utilizing:
+    *   Glassmorphism blur filters (`backdrop-filter: blur(12px)`) with subtle borders (`rgba(255, 255, 255, 0.07)`).
+    *   Interactive radio selection capsules and custom ranges/sliders.
+    *   Sleek scrollbar modifications to replace chunky default browser layouts.
+    *   Responsive layouts using dynamic grids (`display: grid`) and flexboxes.
+    *   Color-coded glowing urgency indicators matching ticket levels.
+*   **Application Logic:** Modular **ES6 JavaScript** featuring:
+    *   Active view controller and client-side page state retention.
+    *   Local database fallbacks to support zero-downtime, fully interactive offline demos via `file:///` protocol.
+    *   Dynamic DOM rendering and custom HTML escaper layers.
+*   **Data Visualization:** **Chart.js v4 (via CDN)** rendering line charts with confidence bounds, multi-dataset ward comparisons, complaint categories doughnuts, and simulator outcomes comparison graphs.
+*   **Icons & Assets:** **FontAwesome Icons v6.5** and Google Fonts (**Sora**, **Outfit**, **JetBrains Mono**).
+
+### 2. High-Performance API Backend
+*   **Framework:** **FastAPI 0.111.0** (Python 3.10+) serving high-speed JSON responses.
+*   **Routing & Controllers:** Segmented routers (Dashboard, Chat, Predict, Recommend, Simulate, Agents, Decision Center).
+*   **Static Serving:** Configured via `aiofiles` and `StaticFiles` to serve the unified static UI natively from root `/`, creating a single-port deployment structure.
+*   **ASGI Server:** **Uvicorn 0.30.0** handling async request loops and reload triggers.
+*   **Validation:** **Pydantic v2** enforcing strict request/response schema boundaries.
+
+### 3. AI Agents & Machine Learning Core
+*   **Predictive Modeling:** **Scikit-Learn 1.5.0** & **NumPy** power ML algorithms that forecast flood probability, water scarcity margins, traffic indices, waste overflow limits, and emission metrics.
+*   **Data Manipulation:** **Pandas 2.2.2** generating time-series forecast vectors.
+*   **Generative AI Orchestration:** **Google Gemini 2.5** (via `google-generativeai` and Vertex AI) powers the:
+    *   **Decision Strategy Synthesizer:** Compiles raw ward statistics into actionable policy targets.
+    *   **Intelligent Chat Assistant:** Natural language search answering with citations, references, and follow-up suggestion blocks.
+*   **Multi-Agent Collaborative Matrix:**
+    *   🌿 **EcoWatch Agent:** Assesses environment, air pollution spikes, and weather anomalies.
+    *   🚗 **TransitFlow Agent:** Assesses road delays, delays, and scheduling bottle-necks.
+    *   👥 **CivicVoice Agent:** Evaluates citizen grievances volume and public sentiment indices.
+    *   💡 **Strategy Engine:** Recommendation synthesis compiling individual metrics into critical priority queues.
+
+### 4. Database & Cloud Architecture (Enterprise Grade)
+*   **Data Warehouse:** **Google BigQuery** (leveraged for historical logs storage).
+*   **Object Storage:** **Google Cloud Storage (GCS)** holding raw unstructured reports.
+*   **RAG Engine:** **Vertex AI Vector Search** providing fast context search injections for LLM requests.
+*   **Containerization:** **Docker** and **Docker Compose** orchestrating isolated client/server processes.
 
 ---
 
@@ -135,61 +184,67 @@ Data Sources (Mock/BigQuery)
 
 ```
 civicmind/
-├── frontend/                    # Next.js Dashboard
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx        # Dashboard
-│   │   │   ├── decision-center/ # ⭐ Executive Command Center
-│   │   │   ├── chat/           # AI Assistant
-│   │   │   ├── analytics/      # Predictive Analytics
-│   │   │   └── simulator/      # What-If Simulator
-│   │   ├── components/         # Reusable UI
-│   │   │   ├── Sidebar.tsx
-│   │   │   ├── CommunityScore.tsx
-│   │   │   ├── MetricCard.tsx
-│   │   │   └── RiskIndicator.tsx
-│   │   ├── data/mockData.ts    # SmartVille mock dataset
-│   │   └── lib/api.ts          # API client
-│
-├── backend/                     # FastAPI Server
-│   ├── main.py
-│   ├── routers/
+├── backend/                     # FastAPI Server & App Source
+│   ├── main.py                  # Server entrypoint (serves static UI at /)
+│   ├── static/                  # ⭐ Unified Frontend static assets
+│   │   ├── index.html           # Main markup structure
+│   │   ├── styles.css           # Glassmorphic Slate stylesheet
+│   │   └── app.js               # Responsive charts & state logic
+│   ├── routers/                 # API endpoint routers
 │   │   ├── dashboard.py
 │   │   ├── chat.py
 │   │   ├── predict.py
 │   │   ├── recommend.py
 │   │   ├── simulate.py
 │   │   ├── agents.py
-│   │   └── decision_center.py  # ⭐ Command Center API
-│   ├── models/
-│   │   ├── scorer.py           # Community Score engine
-│   │   └── predictor.py        # Prediction models
-│   ├── agents/
+│   │   └── decision_center.py
+│   ├── models/                  # Core computations & scoring
+│   │   ├── scorer.py
+│   │   └── predictor.py
+│   ├── agents/                  # Multi-Agent systems
 │   │   ├── environment_agent.py
 │   │   ├── mobility_agent.py
 │   │   ├── citizen_agent.py
 │   │   └── recommendation_agent.py
 │   └── data/generate_data.py   # Mock data generator
 │
-└── docker-compose.yml
+├── frontend_demo/               # Demo preview screenshot files
+│   ├── dashboard.png
+│   ├── desion.png
+│   ├── citizen.png
+│   ├── forcaste.png
+│   └── ai.png
+│
+├── .github/                     # GitHub community guidelines & issue templates
+├── LICENSE                      # MIT License
+├── CONTRIBUTING.md              # Contribution rules
+├── CODE_OF_CONDUCT.md           # Contributor Covenant CoC
+└── docker-compose.yml           # Multi-service container config
 ```
 
 ---
 
 ## ⚡ Quick Start
 
-### Frontend
-```bash
-cd frontend && npm install && npm run dev
-# → http://localhost:3000
-```
+### Method 1: Served Unified Application (Recommended)
+1. **Navigate into the backend directory:**
+   ```bash
+   cd backend
+   ```
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Launch the FastAPI app:**
+   ```bash
+   python main.py
+   ```
+4. **Open the live application:**
+   Go to `http://127.0.0.1:8000/` to view the fully styled CivicMind dashboard connected to the active API.
 
-### Backend
-```bash
-cd backend && pip install -r requirements.txt && python main.py
-# → http://localhost:8000
-# → API Docs: http://localhost:8000/docs
-```
+### Method 2: Offline Static File Access
+1. Simply double-click and open the file [`backend/static/index.html`](file:///d:/SK_docs/projet/cdip/backend/static/index.html) in any browser.
+2. The application will run entirely client-side, automatically falling back to the local database to support charts, chat, and simulations offline!
 
 ---
 
