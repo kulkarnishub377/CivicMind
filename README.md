@@ -208,20 +208,7 @@ cd backend && pip install -r requirements.txt && python main.py
 
 ---
 
-## 🏆 Judging Criteria Mapping
 
-| Criteria | CivicMind Feature |
-|----------|-------------|
-| AI Innovation | Gemini + Multi-Agent System + Explainable AI |
-| Data Analytics | BigQuery + Community Score Engine |
-| Prediction | ML Forecast Models with WHY explanations |
-| Decision Support | Command Center + Action Items + Priority Matrix |
-| Community Impact | Community Pulse + Sentiment Analysis |
-| Automation | ADK Agents with Collaboration Timeline |
-| UX | Dashboard + Chat + Simulator + City Map |
-| Google Cloud Usage | Vertex AI + BigQuery + Cloud Run + Gemini |
-
----
 
 ## 🔮 Future Scope
 
@@ -239,4 +226,4 @@ cd backend && pip install -r requirements.txt && python main.py
 
 **CivicMind transforms fragmented community data into predictive insights, explainable recommendations, and simulated outcomes, enabling governments and communities to make smarter, faster, and more resilient decisions.**
 
-Built with ❤️ for Google Cloud Hackathon
+Built with ❤️ by [Shubham Kulkarni](https://kulkarnishub377.github.io/)
