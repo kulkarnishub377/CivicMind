@@ -12,6 +12,7 @@
 [![BigQuery](https://img.shields.io/badge/BigQuery-Analytics-green)](https://cloud.google.com/bigquery)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-teal)](https://fastapi.tiangolo.com/)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
 
