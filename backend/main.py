@@ -21,6 +21,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+import os
+from fastapi.staticfiles import StaticFiles
+
 # Include routers
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"])
 app.include_router(chat.router, prefix="/api/chat", tags=["Chat"])
@@ -31,21 +34,20 @@ app.include_router(decision_center.router, prefix="/api/decision-center", tags=[
 app.include_router(agents.router, prefix="/api/agents", tags=["AI Agents"])
 
 
-@app.get("/")
-async def root():
-    return {
-        "platform": "CivicMind - Community Decision Intelligence Platform",
-        "version": "1.0.0",
-        "status": "active",
-        "agents": ["environment", "mobility", "citizen", "recommendation"],
-    }
-
-
 @app.get("/health")
 async def health():
     return {"status": "healthy", "agents_active": 4}
 
 
+# Mount static files at root for serving frontend index.html, styles.css, etc.
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if not os.path.exists(static_dir):
+    os.makedirs(static_dir)
+
+app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
