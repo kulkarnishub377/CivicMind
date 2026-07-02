@@ -1420,3 +1420,203 @@ body {
   0%, 100% { opacity: 0.8; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
   50% { opacity: 1; box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
 }
+
+/* Citizen Portal Forms & UI */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.glass-input:focus {
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 10px var(--glow-primary);
+}
+
+.glass-textarea {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  outline: none;
+  resize: none;
+  transition: var(--transition);
+}
+
+.glass-textarea:focus {
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 10px var(--glow-primary);
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: 1px solid var(--border-glass);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.01);
+  flex: 1;
+  transition: var(--transition);
+}
+
+.radio-label input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--text-dark);
+  border-radius: 50%;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"]:checked {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  box-shadow: 0 0 6px var(--glow-primary);
+}
+
+.radio-label:hover {
+  border-color: var(--border-glass-hover);
+  color: var(--text-main);
+}
+
+.radio-label.selected {
+  border-color: var(--color-primary);
+  color: var(--text-main);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+.complaints-scroll-box {
+  max-height: 480px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 6px;
+}
+
+.complaint-log-item {
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 16px;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.complaint-log-item:hover {
+  border-color: var(--border-glass-hover);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.comp-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.comp-log-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-dark);
+}
+
+.comp-log-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+.comp-log-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.comp-log-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+.comp-log-dept {
+  color: var(--text-dark);
+}
+
+/* Toast Notifications */
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-success);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(16,185,129,0.2);
+  color: var(--text-main);
+  padding: 14px 20px;
+  border-radius: 12px;
+  z-index: 1000;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInToast {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+

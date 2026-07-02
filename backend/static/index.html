@@ -57,6 +57,12 @@
             </button>
           </li>
           <li>
+            <button class="nav-btn" data-panel="citizen-portal">
+              <i class="fa-solid fa-user-shield"></i>
+              <span>Citizen Portal</span>
+            </button>
+          </li>
+          <li>
             <button class="nav-btn" data-panel="simulator">
               <i class="fa-solid fa-sliders"></i>
               <span>What-If Simulator</span>
@@ -668,6 +674,97 @@
               <div class="factor-val text-purple">28%</div>
               <div class="factor-lbl">Citizen Grievance Spike</div>
               <p class="factor-desc mt-2">Public transit wait delay feedback correlates with complaints.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 6. CITIZEN PORTAL PANEL -->
+      <section id="panel-citizen-portal" class="content-panel">
+        <div class="grid-layout cols-12">
+          
+          <!-- Submit Complaint Form -->
+          <div class="col-span-5 glass-card flex-column">
+            <h3 class="card-label mb-4"><i class="fa-solid fa-file-signature text-blue mr-2"></i> Report a Community Issue</h3>
+            
+            <form id="complaint-form" class="space-y-3">
+              <div class="form-group">
+                <label class="form-label" for="comp-title">Issue Title</label>
+                <input type="text" id="comp-title" class="glass-input" placeholder="e.g. Streetlight out on Oak St" required>
+              </div>
+              
+              <div class="grid-layout cols-2 gap-2">
+                <div class="form-group">
+                  <label class="form-label" for="comp-ward">Select Ward</label>
+                  <select id="comp-ward" class="glass-select w-full" required>
+                    <option value="Ward A">Ward A</option>
+                    <option value="Ward B">Ward B</option>
+                    <option value="Ward C">Ward C</option>
+                    <option value="Ward D">Ward D</option>
+                    <option value="Ward E">Ward E</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label" for="comp-category">Category</label>
+                  <select id="comp-category" class="glass-select w-full" required>
+                    <option value="Water Scarcity">Water Scarcity</option>
+                    <option value="Waste Management">Waste Management</option>
+                    <option value="Air Quality">Air Quality</option>
+                    <option value="Traffic Congestion">Traffic Congestion</option>
+                    <option value="Public Safety">Public Safety</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Urgency Level</label>
+                <div class="flex-row gap-2 mt-2">
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="Low" checked>
+                    <span>Low</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="Medium">
+                    <span>Medium</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="High">
+                    <span>High</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="comp-severity" value="Critical">
+                    <span>Urgent</span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="comp-description">Detailed Description</label>
+                <textarea id="comp-description" class="glass-textarea" rows="4" placeholder="Provide description, landmark, or specific details to help resolving teams..." required></textarea>
+              </div>
+              
+              <button type="submit" class="primary-btn w-full py-3 font-semibold mt-4">
+                <i class="fa-solid fa-paper-plane mr-2"></i> File Complaint
+              </button>
+            </form>
+          </div>
+          
+          <!-- Reported Complaints List -->
+          <div class="col-span-7 glass-card flex-column">
+            <div class="card-header justify-between mb-4">
+              <h3 class="card-label">📋 Filed Complaints & Resolution Logs</h3>
+              <div class="flex-row gap-2">
+                <button class="small-btn outline comp-filter-btn active" data-filter="All">All</button>
+                <button class="small-btn outline comp-filter-btn" data-filter="Pending">Pending</button>
+                <button class="small-btn outline comp-filter-btn" data-filter="In Progress">In Progress</button>
+                <button class="small-btn outline comp-filter-btn" data-filter="Resolved">Resolved</button>
+              </div>
+            </div>
+            
+            <div class="complaints-scroll-box" id="my-complaints-list">
+              <!-- Dynamically populated by JS -->
             </div>
           </div>
         </div>

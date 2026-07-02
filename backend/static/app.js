@@ -20,7 +20,14 @@ const state = {
     waste: 2, // 1: Semi-weekly, 2: Weekly, 3: Alternate, 4: Daily
     transit: 0, // $0M to $10M
     water: 1, // 1: None, 2: Stage 1, 3: Stage 2
-  }
+  },
+
+  // Citizen Portal Complaints List
+  myComplaints: [
+    { id: 'CV-9412', title: 'Streetlight outage near Metro Station', ward: 'Ward B', category: 'Public Safety', severity: 'Medium', description: 'The streetlights on Route 7 leading to the Metro station are completely dark. Residents feel unsafe walking home after 8 PM.', status: 'Pending', date: 'Dec 01, 2024', department: 'Municipal Safety Grid' },
+    { id: 'CV-9285', title: 'Missed garbage pickup on Main St', ward: 'Ward D', category: 'Waste Management', severity: 'High', description: 'Solid waste smart bins on the corner of Main St and 4th Avenue have been overflowing for 3 days. Foul smell in the area.', status: 'In Progress', date: 'Nov 30, 2024', department: 'Sanitation Division' },
+    { id: 'CV-9041', title: 'Drainage blockage near Sector 4', ward: 'Ward C', category: 'Water Scarcity', severity: 'High', description: 'The main drain channel is blocked with plastic waste. Heavy rain is starting, leading to flash puddle risks.', status: 'Resolved', date: 'Nov 29, 2024', department: 'Hydrological Services' }
+  ]
 };
 
 // Fallback Mock Data (For local file opening file:///... without backend API running)
@@ -88,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     initChat();
     initSimulator();
+    initCitizenPortal();
   });
 });
 
@@ -165,6 +173,7 @@ function initSidebar() {
     'dashboard': { title: 'City Dashboard', subtitle: 'SmartVille — Real-time community metrics & AI insights' },
     'decision-center': { title: 'Executive Decision Center', subtitle: 'Multi-Agent Collaboration & Strategy Dashboard' },
     'ai-chat': { title: 'AI Decision Assistant', subtitle: 'Natural language analysis & recommendation querying' },
+    'citizen-portal': { title: 'Citizen Operations Portal', subtitle: 'Submit complaints, track municipal tickets, and verify resolutions' },
     'simulator': { title: 'What-If Simulation Twin', subtitle: 'Project outcomes, policy adjustments, and score forecasting' },
     'analytics': { title: 'Predictive Forecasting', subtitle: 'Vertex AI Machine Learning models & vulnerability trends' }
   };
@@ -199,6 +208,8 @@ function refreshCharts(panelId) {
     renderSimulatorCharts();
   } else if (panelId === 'analytics') {
     renderAnalyticsCharts();
+  } else if (panelId === 'citizen-portal') {
+    renderCitizenPortal();
   }
 }
 
@@ -1025,3 +1036,176 @@ function renderAnalyticsCharts() {
     }
   });
 }
+
+// Citizen Portal Logic
+let activeCompFilter = 'All';
+
+function initCitizenPortal() {
+  const form = document.getElementById('complaint-form');
+  const radioLabels = document.querySelectorAll('.radio-label');
+  
+  // Custom Radio styling interaction
+  radioLabels.forEach(label => {
+    const radio = label.querySelector('input[type="radio"]');
+    radio.addEventListener('change', () => {
+      radioLabels.forEach(l => l.classList.remove('selected'));
+      if (radio.checked) {
+        label.classList.add('selected');
+      }
+    });
+  });
+
+  // Highlight default checked Low radio
+  const defaultRadio = document.querySelector('.radio-label input[value="Low"]');
+  if (defaultRadio && defaultRadio.checked) {
+    defaultRadio.parentElement.classList.add('selected');
+  }
+
+  // Handle Form Submit
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const title = document.getElementById('comp-title').value.trim();
+    const ward = document.getElementById('comp-ward').value;
+    const category = document.getElementById('comp-category').value;
+    const severity = document.querySelector('input[name="comp-severity"]:checked').value;
+    const description = document.getElementById('comp-description').value.trim();
+    
+    const ticketId = `CV-${Math.floor(1000 + Math.random() * 9000)}`;
+    const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    
+    const deptMap = {
+      'Water Scarcity': 'Hydrological Services',
+      'Waste Management': 'Sanitation Division',
+      'Air Quality': 'EcoWatch & Emissions Control',
+      'Traffic Congestion': 'Transit & Signal Operations',
+      'Public Safety': 'Municipal Safety Grid',
+      'Other': 'General Services'
+    };
+
+    const newTicket = {
+      id: ticketId,
+      title: title,
+      ward: ward,
+      category: category,
+      severity: severity,
+      description: description,
+      status: 'Pending',
+      date: dateStr,
+      department: deptMap[category] || 'General Services'
+    };
+
+    // Prepend to complaints list
+    state.myComplaints.unshift(newTicket);
+    
+    // Update local dashboard state metrics to increment live!
+    if (state.dashboardData && state.dashboardData.wards[ward]) {
+      state.dashboardData.wards[ward].current_data.complaints += 1;
+      
+      // Update charts and dashboard metrics if active
+      populateMetrics();
+      renderDashboardCharts();
+    }
+    
+    // Reset form
+    form.reset();
+    radioLabels.forEach(l => l.classList.remove('selected'));
+    if (defaultRadio) {
+      defaultRadio.checked = true;
+      defaultRadio.parentElement.classList.add('selected');
+    }
+    
+    // Render and Notify
+    renderCitizenPortal();
+    showToast(`Complaint filed successfully! Ticket #${ticketId} created.`);
+  });
+
+  // Handle Resolution filter buttons
+  const filterBtns = document.querySelectorAll('.comp-filter-btn');
+  filterBtns.forEach(btn => {
+    btn.onclick = () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCompFilter = btn.getAttribute('data-filter');
+      renderCitizenPortal();
+    };
+  });
+}
+
+function renderCitizenPortal() {
+  const container = document.getElementById('my-complaints-list');
+  if (!container) return;
+
+  container.innerHTML = '';
+  
+  // Filter complaints list
+  const filtered = state.myComplaints.filter(c => {
+    if (activeCompFilter === 'All') return true;
+    return c.status === activeCompFilter;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="flex-center flex-column text-center py-6 text-slate-500">
+        <i class="fa-solid fa-clipboard-list font-24 mb-2"></i>
+        <p>No complaints found matching status: ${activeCompFilter}.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const categoryEmojis = {
+    'Water Scarcity': '💧',
+    'Waste Management': '🗑️',
+    'Air Quality': '🌫️',
+    'Traffic Congestion': '🚦',
+    'Public Safety': '🛡️',
+    'Other': '📋'
+  };
+
+  filtered.forEach(c => {
+    const statusBadgeClass = c.status === 'Resolved' ? 'green' : c.status === 'In Progress' ? 'orange' : 'red';
+    const severityBadgeClass = c.severity === 'Critical' ? 'red' : c.severity === 'High' ? 'orange' : 'purple';
+    
+    const card = document.createElement('div');
+    card.className = 'complaint-log-item';
+    card.innerHTML = `
+      <div class="comp-log-header">
+        <span class="badge ${severityBadgeClass}">${c.severity} Urgency</span>
+        <div class="comp-log-meta">
+          <span>Ticket: <strong>#${c.id}</strong></span>
+          <span>${c.date}</span>
+        </div>
+      </div>
+      <h4 class="comp-log-title">${categoryEmojis[c.category] || '📋'} ${escapeHtml(c.title)}</h4>
+      <p class="comp-log-desc">${escapeHtml(c.description)}</p>
+      <div class="comp-log-footer">
+        <span class="comp-log-dept"><i class="fa-solid fa-building-user mr-1"></i> Assigned: ${c.department} (${c.ward})</span>
+        <span class="badge ${statusBadgeClass}">${c.status}</span>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function showToast(message) {
+  // Remove existing toast if any
+  const oldToast = document.querySelector('.toast-notification');
+  if (oldToast) oldToast.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-notification';
+  toast.innerHTML = `
+    <i class="fa-solid fa-circle-check text-green mr-2"></i>
+    <span>${message}</span>
+  `;
+  document.body.appendChild(toast);
+
+  // Fade out and remove after 3.5 seconds
+  setTimeout(() => {
+    toast.style.transition = 'opacity 0.5s ease';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 500);
+  }, 3500);
+}
+
