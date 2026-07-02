@@ -11,7 +11,7 @@
 [![Gemini](https://img.shields.io/badge/Gemini-2.5-orange)](https://ai.google.dev/)
 [![BigQuery](https://img.shields.io/badge/BigQuery-Analytics-green)](https://cloud.google.com/bigquery)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-teal)](https://fastapi.tiangolo.com/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Vanilla JS](https://img.shields.io/badge/Vanilla%20JS-ES6-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
@@ -171,12 +171,14 @@ Data Sources (Mock/BigQuery)
     *   🚗 **TransitFlow Agent:** Assesses road delays, delays, and scheduling bottle-necks.
     *   👥 **CivicVoice Agent:** Evaluates citizen grievances volume and public sentiment indices.
     *   💡 **Strategy Engine:** Recommendation synthesis compiling individual metrics into critical priority queues.
+*   **Orchestration Loop:** Driven by Google's **Agent Development Kit (ADK)** combined with a custom asynchronous blackboard state machine. Rather than using external pipelines, the agents post metrics, anomalies, and observations to a central memory state, allowing the **Strategy Engine** to run complex heuristic reasoning and compile high-impact, conflict-free recommendations.
 
 ### 4. Database & Cloud Architecture (Enterprise Grade)
 *   **Data Warehouse:** **Google BigQuery** (leveraged for historical logs storage).
 *   **Object Storage:** **Google Cloud Storage (GCS)** holding raw unstructured reports.
 *   **RAG Engine:** **Vertex AI Vector Search** providing fast context search injections for LLM requests.
 *   **Containerization:** **Docker** and **Docker Compose** orchestrating isolated client/server processes.
+*   **Access Security & RBAC (Future Architecture):** Planned integration with **Google Cloud Identity Platform** and **OAuth2/JWT** bearer tokens in FastAPI, implementing Role-Based Access Control (RBAC) to differentiate Citizen access (reporting and local tracking) from Government/Admin executive centers (running simulator twins and authorizing recommendations).
 
 ---
 
