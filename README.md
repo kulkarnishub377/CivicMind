@@ -284,4 +284,4 @@ civicmind/
 
 **CivicMind transforms fragmented community data into predictive insights, explainable recommendations, and simulated outcomes, enabling governments and communities to make smarter, faster, and more resilient decisions.**
 
-Built with ❤️ by [Shubham Kulkarni](https://kulkarnishub377.github.io/)
+Built with ❤️ by [Shubham Kulkarni](https://kulkarnishub377.github.io/) & [Yadnynesh Dhangar](https://github.com/yadnyesh-96)
